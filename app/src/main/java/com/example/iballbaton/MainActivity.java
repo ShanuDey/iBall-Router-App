@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        EncodePassword encodePassword = new EncodePassword();
+        String encode = encodePassword.str_encode("ShanuDey");
+        Log.v("shanu","encode = "+encode);
     }
 
     @Override
