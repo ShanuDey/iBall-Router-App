@@ -11,10 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -51,23 +54,39 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get user input password
-                String password = String.valueOf(et_password.getText());
-
-                // validate user input password length <13
-                if (password.length()>13){
-                    et_password.setError("Password length can not exceed 12 character");
-                }
-
-                // encode password
-                String encodedPassword = new EncodePassword().str_encode(password);
-
-                // auth in background task
-                LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
-                loginAsyncTask.execute(StaticData.URL_LOGIN, encodedPassword);
-
+               loginAuth();
             }
         });
+
+        et_password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    loginAuth();
+                    handled=true;
+                }
+                return handled;
+            }
+        });
+
+    }
+
+    private void loginAuth(){
+        // get user input password
+        String password = String.valueOf(et_password.getText());
+
+        // validate user input password length <13
+        if (password.length()>13){
+            et_password.setError("Password length can not exceed 12 character");
+        }
+
+        // encode password
+        String encodedPassword = new EncodePassword().str_encode(password);
+
+        // auth in background task
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
+        loginAsyncTask.execute(StaticData.URL_LOGIN, encodedPassword);
     }
 
     @Override
