@@ -52,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
+        String cookie = sharedPreferences.getString(StaticData.COOKIE_NAME,null);
+        if(cookie!=null){
+            goDashboard();
+        }
+
         btn_login = findViewById(R.id.btn_login);
         et_password = findViewById(R.id.et_password);
 
@@ -112,13 +119,17 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(StaticData.COOKIE_NAME,encodedPassword+StaticData.COOKIE_VALUE_SUFFIX);
             editor.commit();
 
-            // redirect to dashboard
-            Intent dashboard = new Intent(this,Dashboard.class);
-            startActivity(dashboard);
-            finish();
+            goDashboard();
+
         } else{
             et_password.setError("Wrong Password! Try Again.");
         }
+    }
+    public void goDashboard(){
+        // redirect to dashboard
+        Intent dashboard = new Intent(this,Dashboard.class);
+        startActivity(dashboard);
+        finish();
     }
 
     @Override
