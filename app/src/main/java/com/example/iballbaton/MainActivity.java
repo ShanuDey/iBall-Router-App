@@ -48,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         et_password = findViewById(R.id.et_password);
 
-
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = String.valueOf(et_password.getText());
+                if (password.length()>13){
+                    et_password.setError("Password length can not exceed 12 character");
+                }
+            }
+        });
     }
 
     @Override
