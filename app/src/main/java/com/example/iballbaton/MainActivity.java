@@ -1,6 +1,7 @@
 package com.example.iballbaton;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -102,7 +103,16 @@ public class MainActivity extends AppCompatActivity {
         // validate result
         Boolean auth = Boolean.parseBoolean(result);
         if(auth) {
+            // Show Toast for success
             Toast.makeText(this, "Authentication Successfull", Toast.LENGTH_SHORT).show();
+
+            // store cookie in shared preference for future use
+            SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(StaticData.COOKIE_NAME,encodedPassword+StaticData.COOKIE_VALUE_SUFFIX);
+            editor.commit();
+
+            // redirect to dashboard
             Intent dashboard = new Intent(this,Dashboard.class);
             startActivity(dashboard);
             finish();
