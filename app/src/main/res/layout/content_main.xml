@@ -28,6 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="40sp"
         android:layout_marginTop="168dp"
+        android:inputType="textPassword"
+        android:maxLines="1"
         android:hint="@string/et_password_hint"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
