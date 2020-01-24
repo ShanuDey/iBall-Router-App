@@ -51,16 +51,23 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // get user input password
                 String password = String.valueOf(et_password.getText());
+
+                // validate user input password length <13
                 if (password.length()>13){
                     et_password.setError("Password length can not exceed 12 character");
                 }
+
+                // encode password
+                String encodedPassword = new EncodePassword().str_encode(password);
+
+                // auth in background task
+                LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
+                loginAsyncTask.execute(StaticData.URL_LOGIN, encodedPassword);
+
             }
         });
-
-        EncodePassword encodePassword = new EncodePassword();
-        String encode = encodePassword.str_encode("ShanuDey");
-        Log.v("shanu","encode = "+encode);
     }
 
     @Override
