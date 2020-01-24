@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -26,6 +27,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,7 +88,23 @@ public class MainActivity extends AppCompatActivity {
 
         // auth in background task
         LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
-        loginAsyncTask.execute(StaticData.URL_LOGIN, encodedPassword);
+        String result = null;
+        try {
+            result = loginAsyncTask.execute(StaticData.URL_LOGIN, encodedPassword).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.v("shanu","result = "+result);
+
+        // validate result
+        Boolean auth = Boolean.parseBoolean(result);
+        if(auth) {
+            Toast.makeText(this, "Authentication Successfull", Toast.LENGTH_SHORT).show();
+        } else{
+            et_password.setError("Wrong Password! Try Again.");
+        }
     }
 
     @Override
@@ -121,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
         }
 
         @Override
@@ -135,10 +154,8 @@ public class MainActivity extends AppCompatActivity {
                 Element inputPassword = authForm.select("input[name=Password]").first();
                 inputPassword.val(strings[1]); // user input password
                 Document document1 = authForm.submit().post();
-
-                Log.v("shanu",document1.outerHtml());
-
-
+                Log.v("shanu",document1.title());
+                return "" + !document1.title().equals("LOGIN");
             } catch (IOException e) {
                 e.printStackTrace();
             }
