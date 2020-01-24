@@ -1,5 +1,6 @@
 package com.example.iballbaton;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,10 +10,19 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,4 +72,40 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private class LoginAsyncTask extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Connection.Response response = Jsoup.connect(strings[0]) // Login Page URL
+                        .method(Connection.Method.GET)
+                        .execute();
+
+                Document document = response.parse();
+                FormElement authForm = (FormElement) document.select("form[name=Auth]").first();
+                Element inputPassword = authForm.select("input[name=Password]").first();
+                inputPassword.val(strings[1]); // user input password
+                Document document1 = authForm.submit().post();
+
+                Log.v("shanu",document1.outerHtml());
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }
