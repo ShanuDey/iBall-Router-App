@@ -1,5 +1,6 @@
 package com.example.iballbaton;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         Boolean auth = Boolean.parseBoolean(result);
         if(auth) {
             Toast.makeText(this, "Authentication Successfull", Toast.LENGTH_SHORT).show();
+            Intent dashboard = new Intent(this,Dashboard.class);
+            startActivity(dashboard);
+            finish();
         } else{
             et_password.setError("Wrong Password! Try Again.");
         }
