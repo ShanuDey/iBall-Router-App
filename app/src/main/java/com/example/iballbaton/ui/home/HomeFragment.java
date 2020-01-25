@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
         String[] connectionState = new String[]{"Disconnected","Connecting","Connected"};
 
         // Fill wan status card_wan_status view's text data
-        ((TextView) card_wan_status.findViewById(R.id.tv_wanIP)).setText(
+        ((TextView) card_wan_status.findViewById(R.id.tv_connection_status)).setText(
                 connectionState[
                         Integer.parseInt(
                                 cleanUp(
