@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment {
+    private Context context;
 
     private HomeViewModel homeViewModel;
 
@@ -47,7 +49,13 @@ public class HomeFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Log.v("shanu: Home: result=", system_status.get("wanIP"));
+
+        context = root.getContext();
+
+        if(system_status==null){
+            Toast.makeText(context, "WiFi not connected", Toast.LENGTH_SHORT).show();
+            return root;
+        }
 
 
         ExpandableCardView card_wan_status =  root.findViewById(R.id.wan_status);
