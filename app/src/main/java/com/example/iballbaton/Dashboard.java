@@ -36,9 +36,7 @@ public class Dashboard extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+                recreate();
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
