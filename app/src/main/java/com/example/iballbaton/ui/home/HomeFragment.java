@@ -108,6 +108,14 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(alertDialog!=null){
+            alertDialog.dismiss();
+        }
+    }
+
     public void showAlert(){
         alertDialog = new MaterialAlertDialogBuilder(context)
                 .setTitle("Alert")
@@ -116,7 +124,7 @@ public class HomeFragment extends Fragment {
                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.cancel();
+                        alertDialog.dismiss();
                         getActivity().recreate();
                     }
                 })
@@ -177,9 +185,14 @@ public class HomeFragment extends Fragment {
                 String[] data = document.select("script[language=JavaScript][type$=text/javascript]").outerHtml().split("\n");
                 HashMap<String, String> system_status = new HashMap<>();
                 for (int i = 5; i <= 22; i++) {
-                    String[] pair = data[i].split("=");
-                    system_status.put(pair[0].trim(), pair[1].trim());
-                    Log.v("shanu", "Key=" + pair[0] + " Value=" + pair[1]);
+                    try{
+                        String[] pair = data[i].split("=");
+                        system_status.put(pair[0].trim(), pair[1].trim());
+                        Log.v("shanu", "Key=" + pair[0] + " Value=" + pair[1]);
+                    }catch (ArrayIndexOutOfBoundsException e){
+                        e.printStackTrace();
+                        return null;
+                    }
                 }
                 return system_status;
             } catch (IOException e) {
