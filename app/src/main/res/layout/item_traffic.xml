@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alespero.expandablecardview.ExpandableCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ecv_traffic"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:animationDuration="300"
+    app:expandOnClick="true"
+    app:inner_view="@layout/card_evc_traffic"
+    app:startExpanded="false"
+    app:title="192.168.1.1" />
