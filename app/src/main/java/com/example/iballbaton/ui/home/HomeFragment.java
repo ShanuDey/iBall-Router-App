@@ -188,7 +188,7 @@ public class HomeFragment extends Fragment {
                     try{
                         String[] pair = data[i].split("=");
                         system_status.put(pair[0].trim(), pair[1].trim());
-                        Log.v("shanu", "Key=" + pair[0] + " Value=" + pair[1]);
+//                        Log.v("shanu", "Key=" + pair[0] + " Value=" + pair[1]);
                     }catch (ArrayIndexOutOfBoundsException e){
                         e.printStackTrace();
                         return null;
