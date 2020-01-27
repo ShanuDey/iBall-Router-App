@@ -112,15 +112,7 @@ public class MainActivity extends AppCompatActivity {
         if(auth) {
             // Show Toast for success
             Toast.makeText(this, "Authentication Successfull", Toast.LENGTH_SHORT).show();
-
-            // store cookie in shared preference for future use
-            SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(StaticData.COOKIE_NAME,encodedPassword+StaticData.COOKIE_VALUE_SUFFIX);
-            editor.commit();
-
             goDashboard();
-
         } else{
             et_password.setError("Wrong Password! Try Again.");
         }
@@ -178,9 +170,19 @@ public class MainActivity extends AppCompatActivity {
                 FormElement authForm = (FormElement) document.select("form[name=Auth]").first();
                 Element inputPassword = authForm.select("input[name=Password]").first();
                 inputPassword.val(strings[1]); // user input password
-                Document document1 = authForm.submit().post();
-                Log.v("shanu",document1.title());
-                return "" + !document1.title().equals("LOGIN");
+                Connection.Response response1 = authForm.submit().execute().method(Connection.Method.POST);
+
+                String cookieValue = response1.cookie(StaticData.COOKIE_NAME);
+                String title = response1.parse().title();
+                Log.v("shanu",title);
+
+                // store cookie in shared preference for future use
+                SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(StaticData.COOKIE_NAME,cookieValue);
+                editor.commit();
+
+                return "" + !title.equals("LOGIN");
             } catch (IOException e) {
                 e.printStackTrace();
             }

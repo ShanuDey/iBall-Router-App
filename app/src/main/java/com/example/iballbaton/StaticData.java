@@ -8,6 +8,5 @@ public class StaticData {
 
 
     public static final String COOKIE_NAME = "ecos_pw";
-    public static final String COOKIE_VALUE_SUFFIX = "cvb:language=en";
     public static final String SHRD_PREF_COOKIE = "LoginAuth";
 }
