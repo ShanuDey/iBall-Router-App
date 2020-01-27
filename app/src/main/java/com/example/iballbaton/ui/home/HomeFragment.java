@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alespero.expandablecardview.ExpandableCardView;
+import com.example.iballbaton.Dashboard;
 import com.example.iballbaton.MainActivity;
 import com.example.iballbaton.R;
 import com.example.iballbaton.StaticData;
@@ -34,6 +35,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class HomeFragment extends Fragment {
     private Context context;
@@ -172,7 +175,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected HashMap<String, String> doInBackground(String... strings) {
             try {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(StaticData.SHRD_PREF_COOKIE, Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(StaticData.SHRD_PREF_COOKIE, MODE_PRIVATE);
                 String cookieValue = sharedPreferences.getString(StaticData.COOKIE_NAME, null);
 
                 Connection.Response response = Jsoup.connect(strings[0]) // Login Page URL
@@ -191,6 +194,7 @@ public class HomeFragment extends Fragment {
 //                        Log.v("shanu", "Key=" + pair[0] + " Value=" + pair[1]);
                     }catch (ArrayIndexOutOfBoundsException e){
                         e.printStackTrace();
+                        logout();
                         return null;
                     }
                 }
@@ -201,4 +205,15 @@ public class HomeFragment extends Fragment {
             return null;
         }
     }
+
+    private void logout() {
+        // Remove cookie
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
+        sharedPreferences.edit().remove(StaticData.COOKIE_NAME).apply();
+
+        // Loading Login Activity
+        startActivity(new Intent(getActivity(),MainActivity.class));
+        getActivity().finish();
+    }
+
 }

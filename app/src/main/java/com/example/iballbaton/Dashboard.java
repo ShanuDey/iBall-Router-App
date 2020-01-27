@@ -81,15 +81,18 @@ public class Dashboard extends AppCompatActivity {
             return true;
         }
         else if(id == R.id.action_logout){
-            // Remove cookie
-            SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
-            sharedPreferences.edit().remove(StaticData.COOKIE_NAME).apply();
-
-            // Loading Login Activity
-            startActivity(new Intent(this,MainActivity.class));
-            finish();
+           logout();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void logout(){
+        // Remove cookie
+        SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
+        sharedPreferences.edit().remove(StaticData.COOKIE_NAME).apply();
+
+        // Loading Login Activity
+        startActivity(new Intent(this,MainActivity.class));
+        finish();
     }
 }
