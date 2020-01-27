@@ -20,6 +20,6 @@
 
     <string name="action_about">About</string>
     <string name="string_donation">Donation: <a href="https://paypal.me/ShanuDey">Buy me a coffee</a></string>
-    <string name="string_source">Source: <a href="https://github.com/ShanuDey/Android_TorchLight">iBall Baton Router App</a></string>
+    <string name="string_source">Source: <a href="https://github.com/ShanuDey/iBall-Router-App">iBall Baton Router App</a></string>
     <string name="string_author">Author: <a href="https://github.com/ShanuDey">Shanu Dey</a></string>
 </resources>
