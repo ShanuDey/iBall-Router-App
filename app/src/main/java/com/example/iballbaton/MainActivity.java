@@ -5,13 +5,16 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -139,7 +142,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            AlertDialog ad_About = new MaterialAlertDialogBuilder(this)
+                    .setTitle("About")
+                    .setView(R.layout.view_about)
+                    .setCancelable(true)
+                    .create();
+            ad_About.show();
+
+            // Make the textview clickable. Must be called after show()
+            TextView tv_source = ad_About.findViewById(R.id.tv_source);
+            tv_source.setMovementMethod(LinkMovementMethod.getInstance());
+
+            ((TextView) ad_About.findViewById(R.id.tv_author)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((TextView) ad_About.findViewById(R.id.tv_donation)).setMovementMethod(LinkMovementMethod.getInstance());
+
             return true;
         }
 
