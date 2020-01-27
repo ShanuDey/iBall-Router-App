@@ -83,7 +83,7 @@ public class Dashboard extends AppCompatActivity {
         else if(id == R.id.action_logout){
             // Remove cookie
             SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
-            sharedPreferences.edit().remove(StaticData.COOKIE_NAME).commit();
+            sharedPreferences.edit().remove(StaticData.COOKIE_NAME).apply();
 
             // Loading Login Activity
             startActivity(new Intent(this,MainActivity.class));

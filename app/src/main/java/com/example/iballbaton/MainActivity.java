@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences(StaticData.SHRD_PREF_COOKIE,MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(StaticData.COOKIE_NAME,cookieValue);
-                editor.commit();
+                editor.apply();
 
                 return "" + !title.equals("LOGIN");
             } catch (IOException e) {
