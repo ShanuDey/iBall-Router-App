@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.example.iballbaton.MainActivity;
 import com.example.iballbaton.R;
 import com.example.iballbaton.StaticData;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -41,6 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class HomeFragment extends Fragment {
     private Context context;
     private AlertDialog alertDialog;
+    private SwitchMaterial switchMaterialEnableBandwidthControl;
 
     private HomeViewModel homeViewModel;
 
@@ -66,6 +69,23 @@ public class HomeFragment extends Fragment {
             showAlert();
             return root;
         }
+
+        switchMaterialEnableBandwidthControl = root.findViewById(R.id.switch_enableBandwidthControl);
+        switchMaterialEnableBandwidthControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String api_url = StaticData.URL_ENABLE_BANDWIDTH_CONTROL+ (isChecked?"1":"0");
+                try {
+                    Boolean result = new EnableBandWidthControlAsyncTask().execute(api_url).get();
+                    if(!result){
+                        Toast.makeText(context, "Opps! Something went wrong ...", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         ExpandableCardView card_wan_status =  root.findViewById(R.id.wan_status);
 
@@ -214,6 +234,26 @@ public class HomeFragment extends Fragment {
         // Loading Login Activity
         startActivity(new Intent(getActivity(),MainActivity.class));
         getActivity().finish();
+    }
+
+    private class EnableBandWidthControlAsyncTask extends AsyncTask<String, String, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(StaticData.SHRD_PREF_COOKIE, MODE_PRIVATE);
+            String cookieValue = sharedPreferences.getString(StaticData.COOKIE_NAME, null);
+            try {
+                Connection.Response response = Jsoup.connect(strings[0]) // Login Page URL
+                        .method(Connection.Method.GET)
+                        .cookie(StaticData.COOKIE_NAME, cookieValue)
+                        .execute();
+//                Log.v("shanu","Response Msg = "+response.statusMessage()+"Response Code=" +response.statusCode());
+                return response.statusCode()==200;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 
 }
