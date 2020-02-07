@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.alespero.expandablecardview.ExpandableCardView;
 import com.example.iballbaton.Dashboard;
 import com.example.iballbaton.MainActivity;
 import com.example.iballbaton.R;
@@ -37,6 +36,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+
+import host.stjin.expandablecardview.ExpandableCardView;
 
 import static android.content.Context.MODE_PRIVATE;
 

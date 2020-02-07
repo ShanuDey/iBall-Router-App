@@ -9,10 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alespero.expandablecardview.ExpandableCardView;
 import com.example.iballbaton.R;
 
 import java.util.ArrayList;
+
+import host.stjin.expandablecardview.ExpandableCardView;
 
 public class TrafficAdapter extends RecyclerView.Adapter<TrafficAdapter.TrafficViewHolder> {
     private Context context;
@@ -35,7 +36,7 @@ public class TrafficAdapter extends RecyclerView.Adapter<TrafficAdapter.TrafficV
     @Override
     public void onBindViewHolder(@NonNull TrafficViewHolder holder, int position) {
         TrafficModel traffic = trafficModels.get(position);
-        holder.evc_traffic.setTitle(traffic.getIp_addr());
+        holder.evc_traffic.setTitle(-1,traffic.getIp_addr());
         holder.tv_uplink.setText(traffic.getUplink());
         holder.tv_downlink.setText(traffic.getDownlink());
         holder.tv_sentMsg.setText(traffic.getSentMsg());
