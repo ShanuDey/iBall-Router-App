@@ -72,6 +72,13 @@ public class HomeFragment extends Fragment {
         }
 
         switchMaterialEnableBandwidthControl = root.findViewById(R.id.switch_enableBandwidthControl);
+        try {
+            boolean enableBandWidthControl = new FetchBandwidthControlEnableStatusAsyncTask().execute(StaticData.URL_STATUS_BANDWIDTH_CONTROL_ENABLER).get();
+//            Log.v("shanu","Enable Bandwidth Control="+enableBandWidthControl);
+            switchMaterialEnableBandwidthControl.setChecked(enableBandWidthControl);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         switchMaterialEnableBandwidthControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -253,6 +260,29 @@ public class HomeFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return false;
+        }
+    }
+
+    private class FetchBandwidthControlEnableStatusAsyncTask extends AsyncTask<String,String, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(StaticData.SHRD_PREF_COOKIE, MODE_PRIVATE);
+            String cookieValue = sharedPreferences.getString(StaticData.COOKIE_NAME, null);
+            try {
+                Connection.Response response = Jsoup.connect(strings[0])
+                        .method(Connection.Method.GET)
+                        .cookie(StaticData.COOKIE_NAME, cookieValue)
+                        .execute();
+//                Log.v("shanu",response.body());
+                String data = response.body().split("\n")[14].substring(16,17);
+//                Log.v("shanu","extracted data="+data);
+                return data.equals("1");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return false;
         }
     }
